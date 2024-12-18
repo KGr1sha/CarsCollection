@@ -3,7 +3,9 @@
 
 CarCollection::CarCollection() {}
 
-CarCollection::CarCollection(std::string filename) {}
+CarCollection::CarCollection(CarCollection const &other) {
+    cars = std::unordered_set<Car>(other.cars);
+}
 
 bool CarCollection::Add(const Car &car) {
     return cars.insert(car).second;

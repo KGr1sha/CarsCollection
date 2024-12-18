@@ -7,7 +7,7 @@
 class CarCollection {
 public:
     CarCollection();
-    CarCollection(std::string filename);
+    CarCollection(CarCollection const &other);
 
     bool Add(const Car &car);
     bool Remove(const Car &car);

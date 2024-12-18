@@ -1,7 +1,8 @@
 objects = car.o\
 		  vintage.o\
 		  super.o\
-		  collection.o
+		  collection.o\
+		  csvhandler.o
 
 
 program : $(objects) src/main.cpp | bin
@@ -28,6 +29,10 @@ super.o : src/supercar.cpp
 
 collection.o : src/collection.cpp
 	g++ -c src/collection.cpp -o collection.o
+
+csvhandler.o : src/csvhandler.cpp
+	g++ -c src/csvhandler.cpp -o csvhandler.o
+
 
 clean :
 	rm $(objects)
