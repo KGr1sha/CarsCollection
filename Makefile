@@ -9,6 +9,11 @@ program : $(objects) src/main.cpp | bin
 	make clean
 	bin/program
 
+tests : $(objects) src/tests.cpp | bin
+	g++ $(objects) src/tests.cpp -o bin/tests
+	make clean
+	bin/tests
+
 bin : 
 	mkdir bin
 

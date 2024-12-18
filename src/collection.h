@@ -16,6 +16,10 @@ public:
     void operator<<(const Car& car);
 
     size_t Size();
+
+    CarCollection WithType(CarType type) const;
+    CarCollection OlderThen(size_t year) const;
+    CarCollection NewerThen(size_t year) const;
 private:
     std::unordered_set<Car> cars;
 };

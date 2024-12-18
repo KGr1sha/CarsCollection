@@ -1,4 +1,5 @@
 #include "collection.h"
+#include <unordered_set>
 
 CarCollection::CarCollection() {}
 
@@ -18,4 +19,34 @@ void CarCollection::operator<<(const Car& car) {
 }
 size_t CarCollection::Size() {
     return cars.size();
+}
+
+CarCollection CarCollection::WithType(CarType type) const {
+    CarCollection newCollection;
+    for (const Car &car : cars) {
+        if (car.GetType() == type) {
+            newCollection << car;
+        }
+    }
+    return newCollection;
+}
+
+CarCollection CarCollection::OlderThen(size_t year) const {
+    CarCollection newCollection;
+    for (const Car &car : cars) {
+        if (car.GetYear() >= year) {
+            newCollection << car;
+        }
+    }
+    return newCollection;
+}
+
+CarCollection CarCollection::NewerThen(size_t year) const {
+    CarCollection newCollection;
+    for (const Car &car : cars) {
+        if (car.GetYear() <= year) {
+            newCollection << car;
+        }
+    }
+    return newCollection;
 }
