@@ -1,26 +1,21 @@
-#include "car.cpp"
-#include <unordered_set>
+#include "collection.h"
 
-class CarCollection {
-public:
-    bool AddCar(const Car &car) {
-        return cars.insert(car).second;
-    }
-    bool RemoveCar(const Car &car) {
-        return cars.erase(car);
-    }
-    bool HasCar(const Car& car) const {
-        return cars.find(car) != cars.end();
-    }
+CarCollection::CarCollection() {}
 
-    void operator<<(const Car& car) {
-        AddCar(car);
-    }
+CarCollection::CarCollection(std::string filename) {}
 
-    size_t GetNumberOfCars() {
-        return cars.size();
-    }
-
-private:
-    std::unordered_set<Car> cars;
-};
+bool CarCollection::Add(const Car &car) {
+    return cars.insert(car).second;
+}
+bool CarCollection::Remove(const Car &car) {
+    return cars.erase(car);
+}
+bool CarCollection::Has(const Car& car) const {
+    return cars.find(car) != cars.end();
+}
+void CarCollection::operator<<(const Car& car) {
+    Add(car);
+}
+size_t CarCollection::Size() {
+    return cars.size();
+}

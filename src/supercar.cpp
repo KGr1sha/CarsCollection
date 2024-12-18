@@ -1,27 +1,21 @@
-#include "car.cpp"
-#include <sstream>
+#include "supercar.h"
 
-class Supercar : public Car {
-public:
-    Supercar(std::string name, std::string model, size_t year, size_t maxSpeed)
-    : Car(name, model, year), maxSpeed(maxSpeed) {
-        type = CarType::Supercar;
-    }
+Supercar::Supercar(std::string name, std::string model, size_t year, size_t maxSpeed)
+: Car(name, model, year), maxSpeed(maxSpeed) {
+    type = CarType::Supercar;
+}
 
-    CarType GetType() const final override {
-        return CarType::Supercar;
-    }
+CarType Supercar::GetType() const {
+    return CarType::Supercar;
+}
 
-    size_t GetMaxSpeed() const {
-        return maxSpeed;
-    }
+size_t Supercar::GetMaxSpeed() const {
+    return maxSpeed;
+}
 
-    std::string ToStr() const override {
-        std::stringstream ss;
-        ss << Car::ToStr();
-        ss << "\nMax speed: " << maxSpeed;
-        return ss.str();
-    }
-private:
-    size_t maxSpeed;
-};
+std::string Supercar::ToStr() const {
+    std::stringstream ss;
+    ss << Car::ToStr();
+    ss << "\nMax speed: " << maxSpeed;
+    return ss.str();
+}

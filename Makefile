@@ -1,10 +1,11 @@
 objects = car.o\
 		  vintage.o\
-		  super.o
+		  super.o\
+		  collection.o
 
 
 program : $(objects) src/main.cpp | bin
-	g++ src/main.cpp -o bin/program
+	g++ $(objects) src/main.cpp -o bin/program
 	make clean
 	bin/program
 
@@ -19,6 +20,9 @@ vintage.o : src/vintage_car.cpp
 
 super.o : src/supercar.cpp
 	g++ -c src/supercar.cpp -o super.o
+
+collection.o : src/collection.cpp
+	g++ -c src/collection.cpp -o collection.o
 
 clean :
 	rm $(objects)
