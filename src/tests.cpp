@@ -1,9 +1,15 @@
+#include <fstream>
+#include <stdio.h>
 #include <iostream>
 #include <assert.h>
-#include "car.h"
 #include "collection.h"
-#include "supercar.h"
-#include "vintage_car.h"
+#include "csvhandler.h"
+
+
+bool exists(const std::string &filename) {
+    std::ifstream f(filename);
+    return f.good();
+}
 
 bool test(int test_id) {
     switch (test_id) {
@@ -34,12 +40,52 @@ bool test(int test_id) {
             break;
         }
         case 4: { //collection
+            CarCollection collection;
+            Car car1(1, "n", "m", 1000);
+            VintageCar car2(2, "n", "m", 2000, 3);
+            class Supercar car3(3, "n", "m", 3000, 500);
+            collection.Add(car1);
+            collection << car2;
+            collection << car3;
+            assert(collection.Size() == 3);
+            collection.Remove(car3);
+            assert(collection.Size() == 2);
+            collection << car3;
+            assert(collection.WithType(Regular).Size() == 1);
+            assert(collection.WithType(Vintage).Size() == 1);
+            assert(collection.WithType(Supercar).Size() == 1);
+            assert(collection.OlderThen(1500).Size() == 1);
+            assert(collection.NewerThen(2000).Size() == 2);
+            assert(
+                collection
+                .NewerThen(2000)
+                .WithType(Supercar)
+                .Size() == 1
+            );
             break;
         }
-        case 5: {
-            break;
-        }
-        case 6: {
+        case 5: { //csv file writing & reading
+            CarCollection collection;
+            Car car1(1, "n", "m", 1000);
+            VintageCar car2(2, "n", "m", 2000, 3);
+            class Supercar car3(3, "n", "m", 3000, 500);
+            collection << car1;
+            collection << car2;
+            collection << car3;
+
+            CSVHandler::WriteCollection(collection, "test.csv"); 
+            CarCollection col2 = CSVHandler::ReadCollection("test.csv");
+            assert(col2.Size() == 3);
+            assert(col2.Has(car1));
+            assert(col2.Has(car2));
+            assert(col2.Has(car3));
+            assert(col2.WithType(Regular).Size() == 1);
+            assert(col2.WithType(Vintage).Size() == 1);
+            assert(col2.WithType(Supercar).Size() == 1);
+
+            if (exists("test.csv")) {
+                remove("test.csv");
+            }
             break;
         }
     
