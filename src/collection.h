@@ -1,13 +1,14 @@
 #pragma once
-#include "car.h"
 #include "vintage_car.h"
 #include "supercar.h"
+#include <memory>
+#include <unordered_map>
 #include <unordered_set>
 
 class CarCollection {
 public:
     CarCollection();
-    CarCollection(CarCollection const &other);
+    CarCollection(const CarCollection &other);
 
     bool Add(const Car &car);
     bool Remove(const Car &car);
@@ -20,6 +21,11 @@ public:
     CarCollection WithType(CarType type) const;
     CarCollection OlderThen(size_t year) const;
     CarCollection NewerThen(size_t year) const;
+
+    std::unordered_set<std::shared_ptr<Car>> Cars() const;
+
+    std::string ToStr() const;
+    
 private:
-    std::unordered_set<Car> cars;
+    std::unordered_map<size_t, std::shared_ptr<Car>> cars;
 };

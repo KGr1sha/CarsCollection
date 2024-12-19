@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <sstream>
 #include <string>
 
@@ -10,8 +11,10 @@ enum CarType {
 
 class Car {
 public:
-    Car(std::string name, std::string model, size_t year);
+    Car(size_t id, std::string name, std::string model, size_t year);
+    Car(const Car &other);
 
+    size_t GetId() const;
     std::string GetName() const;
     std::string GetModel() const;
     size_t GetYear() const;
@@ -20,23 +23,25 @@ public:
     bool SetName(std::string newName);
     void SetMode(std::string newModel);
     void SetYear(size_t newYear);
+    void SetId(size_t newId);
 
     virtual std::string ToStr() const;
+    virtual std::string ToCSVStr() const;
 
     bool operator==(Car const &other) const;
 
+    virtual std::shared_ptr<Car> MakeShared() const;
+
 protected:
+    size_t id;
     std::string name;        
     std::string model;
     size_t year;
-    CarType type;
 };
 
 template<>
 struct std::hash<Car> {
-    size_t operator()(Car const &car) const {
-        size_t h1 = std::hash<std::string>{}(car.GetName());
-        size_t h2 = std::hash<std::string>{}(car.GetModel());
-        return h1 ^ (h2 << 1);
+    size_t operator()(const Car &car) const {
+        return std::hash<size_t>{}(car.GetId());
     }
 };

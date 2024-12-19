@@ -1,9 +1,15 @@
 #include <iostream>
+#include <memory>
 #include "car.h"
 
-Car::Car(std::string name, std::string model, size_t year)
-: name(name), model(model), year(year) {
-    type = CarType::Regular;
+Car::Car(size_t id, std::string name, std::string model, size_t year):
+id(id), name(name), model(model), year(year) {}
+
+Car::Car(const Car &other):
+Car(other.id, other.name, other.model, other.year) {}
+
+size_t Car::GetId() const {
+    return id;
 }
 
 std::string Car::GetName() const {
@@ -17,6 +23,10 @@ size_t Car::GetYear() const {
 }
 CarType Car::GetType() const {
     return CarType::Regular; 
+}
+
+void Car::SetId(size_t newId) {
+    id = newId;
 }
 
 bool Car::SetName(std::string newName) {
@@ -33,11 +43,19 @@ void Car::SetYear(size_t newYear) {
     year = newYear; 
 }
 
+std::shared_ptr<Car> Car::MakeShared() const {
+    return std::make_shared<Car>(id, name, model, year);
+}
+
+bool Car::operator==(const Car &other) const {
+    return id == other.id && name == other.GetName() && model == other.GetModel();
+}
+
 std::string Car::ToStr() const {
     std::stringstream ss;
     ss << "--CAR--\n";
-    ss << "Name: " << name << "\nModel: " << model << "\nYear: " << year;
-    switch(type) {
+    ss << "id: " << id << "\nName: " << name << "\nModel: " << model << "\nYear: " << year;
+    switch(GetType()) {
         case CarType::Regular:
             ss << "\nType: Regular";
             break;
@@ -52,6 +70,23 @@ std::string Car::ToStr() const {
     return ss.str();
 }
 
-bool Car::operator==(Car const &other) const {
-    return name == other.GetName() && model == other.GetModel();
+std::string Car::ToCSVStr() const {
+    std::stringstream ss; 
+    ss << id << "," 
+    << name << ","
+    << model << ","
+    << year << ",";
+    switch(GetType()) {
+        case CarType::Regular:
+            ss << "Regular";
+            break;
+        case CarType::Vintage:
+            ss << "Vintage";
+            break;
+        case CarType::Supercar:
+            ss << "Supercar";
+            break;
+    }
+    ss << ",,";
+    return ss.str();
 }
